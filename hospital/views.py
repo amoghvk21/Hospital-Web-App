@@ -40,3 +40,31 @@ def register_view(request):
         return render(request, "hospital/register.html")
 
 
+def login_view(request):
+    if request.method == "POST":
+
+        # Get data
+        email = request.POST["email"]
+        password = request.POST["password"]
+
+        # Find the user
+        try:
+            user = User.objects.get(email=email)
+        except:
+            return render(request, "hospital/register.html", {
+                "message": "User doesn't exist"
+            })
+        
+        # Check the password
+        if user.password != password:
+            return render(request, "hospital/register.html", {
+                "message": "Incorrect password"
+            })
+        else:
+            # Login
+            login(request, user)
+
+            # Redirect user
+            return HttpResponseRedirect(reverse("test"))
+
+    return render(request, "hospital/login.html")
