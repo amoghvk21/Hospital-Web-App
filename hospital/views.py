@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from .models import *
 from datetime import datetime
+from django.core.files.storage import FileSystemStorage
+from django import forms
 
 
 def index_view(request):
@@ -129,7 +131,38 @@ def doctor_homepage_view(request):
         return HttpResponseRedirect(reverse("index"))
 
 
+class ImageForm(forms.Form):
+    history = forms.CharField(label='', widget=forms.Textarea())
+    img = forms.ImageField(required=False, label='')
+
+
 def edit_view(request, id):
-    return render(request, "hospital/edit.html", {
-        'patient': User.objects.get(id=id)
-    })
+    
+    # Check if they have access
+    if request.user.role == 'd':
+
+        if request.method == 'POST':
+            form = ImageForm(request.POST, request.FILES)
+            if form.is_valid():
+
+                # Get the form data
+                history = form.cleaned_data.get('history')
+                img = form.cleaned_data.get('img')
+
+                # Find and update fields
+                user = User.objects.get(id=id)
+                user.history = history
+                user.img = img
+                user.save()
+
+                # Redirect user back to patient page
+                return HttpResponseRedirect(reverse('patient', kwargs={'id': id}))
+        else:
+            return render(request, "hospital/edit.html", {
+                'patient': User.objects.get(id=id),
+                'form': ImageForm(initial={
+                    'history': User.objects.get(id=id).history
+                })
+            })
+    else:
+        return HttpResponseRedirect(reverse('index'))
