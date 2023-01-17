@@ -1,0 +1,12 @@
+{% extends "hospital/layout.html" %}
+
+{% block body %}
+
+    <h2 id="edit-title">Edit</h2>
+
+    <form action="/edit/{{patient.id}}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary" id="edit-save">Save</button>
+    </form>
+{% endblock %}

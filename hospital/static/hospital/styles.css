@@ -1,0 +1,101 @@
+.form-group {
+    margin: auto;
+    width: 300px;
+}
+
+#register-title {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#register-message {
+    margin-top: 10px;
+    text-align: center;
+    color: red;
+}
+
+#login-title {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#login-message {
+    margin-top: 10px;
+    text-align: center;
+    color: red;
+}
+
+#patient-general {
+    border: 1px black solid;
+    width: 200px;
+    margin-bottom: 100px;
+    margin-left: 10px;
+    padding-left: 10px;
+}
+
+#patient-history {
+    border: 1px black solid;
+    margin-bottom: 100px;
+    margin-left: 10px;
+    padding-left: 10px;
+    margin-right: 10px;
+}
+
+#patient-diagnosis {
+    border: 1px black solid;
+    margin-left: 10px;
+    padding-left: 10px;
+    margin-right: 10px;
+    padding-bottom: 10px;
+}
+
+#patient-edit-button {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#patient-img {
+    width: 20%;
+    height: 20%;
+}
+
+#patient-title {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#doctor-title {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.doctor-patients {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#edit-title {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+#id_history {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    height: 400px;
+    margin-bottom: 40px;
+}
+
+#id_img {
+    margin-left: 45%
+}
+
+#edit-save {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

@@ -1,0 +1,32 @@
+{% extends "hospital/layout.html" %}
+
+{% block body %}
+    <h2 id="patient-title">{{patient.first_name}} {{patient.last_name}}</h2>
+
+    <div id="patient-general">
+        <h3>General</h3>
+        <p><strong>Sex: </strong>{{ patient.sex }}</p>
+        <p><strong>DOB: </strong>{{ patient.dob }}</p>
+        <p><strong>Email: </strong>{{ patient.email }}</p>
+    </div>
+
+    <div id="patient-history">
+        <h3>Medical History</h3>
+        <p>{{ patient.history }}</p>
+    </div>
+
+    {% if patient.img.url != None %}
+        <div id="patient-diagnosis">
+            <h3>Diagnosis</h3>
+            <p>{{ patient.diagnosis }}</p>
+            <img src="{{patient.img.url}}" id="patient-img">
+        </div>
+    {% endif %}
+
+    {% if user.role == 'd' %}
+        <div id="patient-edit-button">
+            <a href="/edit/{{patient.id}}"><button class="btn btn-primary">Edit</button></a>
+        </div>
+    {% endif %}
+
+{% endblock %}

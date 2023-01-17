@@ -1,0 +1,59 @@
+{% extends "hospital/layout.html" %}
+
+{% block body %}
+
+    {% if message %}
+        <h2 id="register-message">{{ message }}</h2>
+    {% endif %}
+    
+    <h2 id="register-title">Register</h2>
+
+    <form action="{% url 'register' %}" method="post" id="register-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text", name="name", id="name" class="form-control" autofocus>
+        </div>
+            
+        <div class="form-group">
+            <label for="surname">Surname:</label>
+            <input type="text", name="surname", id="surname" class="form-control" autofocus>
+        </div>
+            
+        <div class="form-group">
+            <label for="dob"> Date of Birth:</label>
+            <input type="date", name="dob" id="dob" class="form-control" autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="sex">Sex:</label>
+            <select name="sex" id="sex">
+                <option value="m">Male</option>
+                <option value="f">Female</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email", name="email", id="email" class="form-control" autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" class="form-control" autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select name="role" id="role">
+                <option value="p">Patient</option>
+                <option value="d">Doctor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Register">
+        </div>
+
+    </form>
+{% endblock %}

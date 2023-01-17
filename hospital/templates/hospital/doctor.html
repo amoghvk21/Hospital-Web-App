@@ -1,0 +1,15 @@
+{% extends "hospital/layout.html" %}
+
+{% block body %}
+
+    <h2 id="doctor-title">All Patients</h2>
+
+    {% for patient in patients %}
+
+        <div>
+            <h4 class="doctor-patients"><a href="patient/{{patient.id}}">{{patient.first_name}} {{patient.last_name}} ({{patient.sex}})</a></h4>
+        </div>
+
+    {% endfor %}
+
+{% endblock %}
