@@ -6,6 +6,8 @@ from .models import *
 from datetime import datetime
 from django.core.files.storage import FileSystemStorage
 from django import forms
+from predict import predict
+from PIL import Image
 
 
 def index_view(request):
@@ -153,6 +155,14 @@ def edit_view(request, id):
                 user = User.objects.get(id=id)
                 user.history = history
                 user.img = img
+                user.save()
+
+                # Get diagnosis from neural net
+                img = Image.open(f'hospital/static/hospital/img/{id}.png')
+                diagnosis = predict(img)
+
+                # Save new diagnois
+                user.diagnosis = diagnosis
                 user.save()
 
                 # Redirect user back to patient page
