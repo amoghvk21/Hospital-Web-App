@@ -8,6 +8,7 @@ from django.core.files.storage import FileSystemStorage
 from django import forms
 from predict import predict
 from PIL import Image
+from django.forms.widgets import NumberInput
 
 
 def index_view(request):
@@ -24,6 +25,83 @@ def index_view(request):
         return HttpResponseRedirect(reverse("doctor"))
 
 
+class RegisterForm(forms.Form):
+
+    SEX = [
+        ('m', 'Male'), 
+        ('f', 'Female')
+    ]
+
+    ROLES = [
+        ('p', 'Patient'),
+        ('d', 'Doctor')
+    ]
+
+    name = forms.CharField(max_length=50, required=True)
+    surname = forms.CharField(max_length=50, required=True)
+    dob = forms.DateField(required=True, label='Date of Birth', widget=NumberInput(attrs={'type': 'date'}))
+    sex = forms.CharField(widget=forms.Select(choices=SEX), required=True)
+    email = forms.EmailField(max_length=50, required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), required=True)
+    role = forms.CharField(widget=forms.Select(choices=ROLES), max_length=50, required=True)
+
+# dob = datetime.strptime(form.cleaned_data['dob'], '%Y-%m-%d').date()
+
+def register_view(request):
+
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("index"))
+
+    else:
+        if request.method == 'POST':
+            # Get data
+            form = RegisterForm(request.POST)
+
+            # Input validation
+            if form.is_valid():
+
+                # Extract each field
+                name = form.cleaned_data['name']
+                surname = form.cleaned_data['surname']
+                dob = form.cleaned_data['dob']
+                sex = form.cleaned_data['sex']
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                role = form.cleaned_data['role']
+
+                # Check if user already exists
+                try:
+                    user = User.objects.get(email=email)
+                    return render(request, "hospital/register.html", {
+                        "message": "Error, email already taken",
+                        'form': RegisterForm(auto_id='register_%s')
+                    })
+                except:
+                    pass 
+
+                # Create new user
+                try:
+                    user = User(first_name=name, last_name=surname, dob=dob, sex=sex, email=email, password=password, role=role, username=email)
+                    user.save()
+                except:
+                    return render(request, "hospital/register.html", {
+                        "message": "Error",
+                        'form': RegisterForm(auto_id='register_%s')
+                    })
+
+                # Login to this user
+                login(request, user)
+
+                # Redirect user
+                return HttpResponseRedirect(reverse("index"))
+
+        else:
+            return render(request, 'hospital/register.html', {
+                'form': RegisterForm(auto_id='register_%s')
+            })
+
+
+'''
 def register_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse("index"))
@@ -65,6 +143,7 @@ def register_view(request):
             return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "hospital/register.html")
+'''
 
 
 def login_view(request):
