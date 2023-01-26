@@ -19,12 +19,17 @@
     text-align: center;
 }
 
-#login-title {
+#login_title {
     margin-top: 10px;
     text-align: center;
 }
 
-#login-message {
+#login_form {
+    text-align: center;
+    margin-top: 40px;
+}
+
+#login_message {
     margin-top: 10px;
     text-align: center;
     color: red;
