@@ -45,7 +45,6 @@ class RegisterForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(), required=True)
     role = forms.CharField(widget=forms.Select(choices=ROLES), max_length=50, required=True)
 
-# dob = datetime.strptime(form.cleaned_data['dob'], '%Y-%m-%d').date()
 
 def register_view(request):
 
@@ -99,51 +98,6 @@ def register_view(request):
             return render(request, 'hospital/register.html', {
                 'form': RegisterForm(auto_id='register_%s')
             })
-
-
-'''
-def register_view(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse("index"))
-    else:
-
-        if request.method == "POST":
-
-            # Get data
-            name = request.POST["name"]
-            surname = request.POST["surname"]
-            dob = datetime.strptime(request.POST["dob"], '%Y-%m-%d').date()
-            sex = request.POST["sex"]
-            email = request.POST["email"]
-            password = request.POST["password"]
-            role = request.POST["role"]
-
-            # Check if user already exists
-            try:
-                user = User.objects.get(email=email)
-                return render(request, "hospital/register.html", {
-                    "message": "Error, email already taken"
-                })
-            except:
-                pass 
-
-            # Create new user
-            try:
-                user = User(first_name=name, last_name=surname, dob=dob, sex=sex, email=email, password=password, role=role, username=email)
-                user.save()
-            except:
-                return render(request, "hospital/register.html", {
-                    "message": "Error"
-                })
-
-            # Login to this user
-            login(request, user)
-
-            # Redirect user
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request, "hospital/register.html")
-'''
 
 
 def login_view(request):
