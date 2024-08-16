@@ -11,6 +11,7 @@ from PIL import Image
 from django.forms.widgets import NumberInput
 
 
+
 def index_view(request):
     
     # Redirect to login
@@ -100,38 +101,56 @@ def register_view(request):
             })
 
 
+<<<<<<< HEAD
+=======
+class LoginForm(forms.Form):
+    email = forms.CharField(max_length=50, required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), max_length=50, required=True)
+
+
+>>>>>>> 4adbb3544b5d28dd3b3d513471d85330fffe7964
 def login_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse("index"))
     else:
 
         if request.method == "POST":
-
             # Get data
-            email = request.POST["email"]
-            password = request.POST["password"]
+            form = LoginForm(request.POST)
 
-            # Find the user
-            try:
-                user = User.objects.get(email=email)
-            except:
-                return render(request, "hospital/login.html", {
-                    "message": "User doesn't exist"
-                })
-            
-            # Check the password
-            if user.password != password:
-                return render(request, "hospital/login.html", {
-                    "message": "Incorrect password"
-                })
-            else:
-                # Login
-                login(request, user)
+            # Input validation
+            if form.is_valid():
 
-                # Redirect user
-                return HttpResponseRedirect(reverse("index"))
+                # Extract each field
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
 
-        return render(request, "hospital/login.html")
+                # Find the user
+                try:
+                    user = User.objects.get(email=email)
+                except:
+                    return render(request, "hospital/login.html", {
+                        "message": "User doesn't exist", 
+                        'form': LoginForm(auto_id='login_%s')
+                    })
+                
+                # Check the password
+                if user.password != password:
+                    return render(request, "hospital/login.html", {
+                        "message": "Incorrect password",
+                        'form': LoginForm(auto_id='login_%s')
+                    })
+                else:
+                    # Login
+                    login(request, user)
+
+                    # Redirect user
+                    return HttpResponseRedirect(reverse("index"))
+                
+
+        return render(request, "hospital/login.html", {
+            'form': LoginForm(auto_id='login_%s')
+        })
 
 
 def logout_view(request):
