@@ -101,14 +101,11 @@ def register_view(request):
             })
 
 
-<<<<<<< HEAD
-=======
 class LoginForm(forms.Form):
     email = forms.CharField(max_length=50, required=True)
     password = forms.CharField(widget=forms.PasswordInput(), max_length=50, required=True)
 
 
->>>>>>> 4adbb3544b5d28dd3b3d513471d85330fffe7964
 def login_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse("index"))
